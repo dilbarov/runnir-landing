@@ -123,10 +123,12 @@ summary {
       animation-timeline: scroll(root);
       animation-range: 0 60vh;
     }
+    /* Fade the headline block only once it reaches the top of the viewport, so on short screens
+       the CTAs are fully visible before they start to go */
     .hero-head {
       animation: head-out linear both;
-      animation-timeline: scroll(root);
-      animation-range: 4vh 50vh;
+      animation-timeline: view();
+      animation-range: exit 0% exit 80%;
     }
   }
 }
