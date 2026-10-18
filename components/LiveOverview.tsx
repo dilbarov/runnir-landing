@@ -96,7 +96,7 @@ export function LiveOverview() {
         {running ? "Waiting for the pipeline to finish…" : "Archive failed — fix it or re-run to continue."}
       </p>
       <div className="hidden h-px bg-line md:block" />
-      <div className="grid gap-6 pb-6 md:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 pb-6 md:grid-cols-[minmax(0,1fr)_320px]">
         <div>
           <div className="flex justify-between pb-1.5 text-[10.5px] font-semibold tracking-wider text-fg-2">
             RECENT RUNS <span className="text-xs font-normal tracking-normal text-accent">All runs</span>
