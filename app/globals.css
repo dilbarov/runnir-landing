@@ -121,15 +121,6 @@ body {
       animation-timeline: scroll(root);
       animation-range: 4vh 50vh;
     }
-    .hero-window {
-      perspective: 1800px;
-    }
-    .hero-tilt {
-      transform-origin: 50% 0;
-      animation: window-tilt linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 40%;
-    }
   }
 }
 
@@ -194,12 +185,6 @@ body {
     opacity: 0;
     transform: translateY(-80px) scale(0.97);
     filter: blur(6px);
-  }
-}
-@keyframes window-tilt {
-  from {
-    transform: rotateX(24deg) scale(0.9) translateY(30px);
-    opacity: 0.5;
   }
 }
 

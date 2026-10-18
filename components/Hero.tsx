@@ -69,11 +69,9 @@ export function Hero({ release }: { release: Release }) {
             macOS 15+ · Free · GPLv3 · No telemetry by default
           </p>
         </div>
-        <div className="hero-window mt-7 w-full">
+        <div className="mt-7 w-full">
           <span className="sr-only">{TAGLINE}</span>
-          <div className="hero-tilt">
-            <AppWindow />
-          </div>
+          <AppWindow />
         </div>
       </div>
     </section>

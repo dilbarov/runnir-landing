@@ -13,17 +13,17 @@ const sidebar = [
 export function AppWindow() {
   return (
     <div className="relative mx-auto w-full max-w-[1240px]">
-      {/* Glow fades out before the window's bottom edge, so the section boundary never cuts it */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-24 -top-20 bottom-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_80px,rgba(124,156,255,0.14),transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent,#000_80px,#000_70%,transparent)]"
-      />
       <div
         role="img"
         aria-label="Runnir app window showing the Overview of acme/mobile-app: pipeline stages, recent runs and manual runs"
         data-nosnippet
         className="mock relative overflow-hidden rounded-t-xl border border-b-0 border-line bg-[#181b20] text-left"
       >
+        {/* Thin light along the top edge, instead of a glow that would spill into the hero */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(124,156,255,0.55)_50%,transparent)]"
+        />
         <div className="flex" inert>
           <aside className="hidden w-[220px] shrink-0 flex-col gap-1 bg-bg-alt px-3 py-3.5 md:flex">
             <div className="flex gap-2 px-1 pb-4">
