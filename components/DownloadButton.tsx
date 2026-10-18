@@ -61,14 +61,20 @@ export function DownloadButton({ release, location, size = "lg", align = "center
       >
         <Icon name="download" size={size === "sm" ? 15 : 18} />
         {size === "sm" ? "Download" : label}
-        <span className="whitespace-nowrap rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-medium text-warning max-sm:text-[10px]">
+        {/* Shorter badge on narrow screens; the nav drops it entirely on the narrowest phones */}
+        <span
+          className={`whitespace-nowrap rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-medium text-warning max-sm:text-[10px] ${size === "sm" ? "max-[359px]:hidden" : ""}`}
+        >
           {size === "sm" ? (
             <>
               <span className="sm:hidden">Soon</span>
               <span className="max-sm:hidden">In development</span>
             </>
           ) : (
-            "In development"
+            <>
+              <span className="min-[400px]:hidden">Soon</span>
+              <span className="max-[399px]:hidden">In development</span>
+            </>
           )}
         </span>
       </button>
