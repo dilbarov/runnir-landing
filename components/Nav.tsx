@@ -32,7 +32,7 @@ export function Nav({ release }: { release: Release }) {
         <a href="#top" aria-label="Runnir home" className="shrink-0">
           <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={130} height={49} priority className="h-[49px] w-auto max-lg:h-10" />
         </a>
-        <ul className="hidden items-center gap-9 lg:flex">
+        <ul className="hidden items-center gap-9 xl:flex">
           {NAV.map((l) => (
             <li key={l.href}>
               <a
@@ -55,14 +55,14 @@ export function Nav({ release }: { release: Release }) {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="grid size-9 place-items-center rounded-lg text-fg-2 hover:text-fg lg:hidden"
+            className="grid size-9 place-items-center rounded-lg text-fg-2 hover:text-fg xl:hidden"
           >
             <Icon name={open ? "close" : "menu"} size={20} />
           </button>
         </div>
       </nav>
       {open && (
-        <div className="container-x pb-3 lg:hidden">
+        <div className="container-x pb-3 xl:hidden">
           <ul className="rounded-xl border border-line bg-surface/95 p-2">
             {NAV.map((l) => (
               <li key={l.href}>

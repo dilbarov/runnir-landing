@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { FAQ, REPO_URL, RELEASES_URL, TRUST } from "@/lib/content";
+import { CloneCommand } from "./CloneCommand";
 import { DownloadButton } from "./DownloadButton";
 import { GitHubLink } from "./GitHubLink";
 import { Icon } from "./Icon";
@@ -60,10 +61,7 @@ export function DownloadSection({ release }: { release: Release }) {
           <DownloadButton release={release} location="download" label="Download latest release" />
           <GitHubLink location="download" label="View on GitHub" />
         </div>
-        <div className="flex max-w-full items-center gap-3.5 overflow-x-auto rounded-lg bg-editor px-[18px] py-3 font-mono text-[13px]">
-          <span className="text-accent">$</span>
-          <code className="whitespace-nowrap text-fg">git clone {REPO_URL}.git</code>
-        </div>
+        <CloneCommand />
         <p className="text-[13px] text-fg-2">
           {release ? `Latest release ${release.tag}. ` : ""}Signed and notarized builds are not available yet.
         </p>
