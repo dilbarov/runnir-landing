@@ -63,7 +63,7 @@ export function DownloadButton({ release, location, size = "lg", align = "center
         {size === "sm" ? "Download" : label}
         {/* Shorter badge on narrow screens; the nav drops it entirely on the narrowest phones */}
         <span
-          className={`whitespace-nowrap rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-medium text-warning max-sm:text-[10px] ${size === "sm" ? "max-[359px]:hidden" : ""}`}
+          className={`whitespace-nowrap rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-medium text-warning max-sm:text-[10px] ${size === "sm" ? "max-[399px]:hidden" : ""}`}
         >
           {size === "sm" ? (
             <>
