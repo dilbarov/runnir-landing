@@ -9,13 +9,21 @@ type Release = { tag: string; downloadUrl: string } | null;
 export function Hero({ release }: { release: Release }) {
   return (
     <section id="top" aria-labelledby="hero-h" className="relative overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[560px] md:h-[640px] lg:h-[810px]">
+      {/* Wider than the design frame: a blurred copy of the scene continues the fog to the edges */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 hidden h-[810px] min-[1440px]:block">
+        <Image src="/brand/runestone-hero.webp" alt="" fill sizes="640px" className="scale-110 object-cover opacity-70 blur-2xl" />
+      </div>
+      {/* The stone keeps its design size (1440 × 810) and fades into the backdrop at the sides */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-0 h-[560px] w-full max-w-[1440px] -translate-x-1/2 md:h-[640px] lg:h-[810px] min-[1440px]:[mask-image:linear-gradient(90deg,transparent,#000_18%,#000_82%,transparent)]"
+      >
         <Image
           src="/brand/runestone-hero.webp"
           alt=""
           fill
           priority
-          sizes="100vw"
+          sizes="(min-width: 1440px) 1440px, 100vw"
           className="object-cover object-top"
         />
       </div>
