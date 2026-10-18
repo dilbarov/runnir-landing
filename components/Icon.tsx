@@ -15,6 +15,7 @@ const icons: Record<string, ReactNode> = {
     </>
   ),
   check: <path d="M20 6 9 17l-5-5" />,
+  arrowUp: <path d="m5 12 7-7 7 7M12 19V5" />,
   copy: (
     <>
       <rect x="8" y="8" width="14" height="14" rx="2" />
