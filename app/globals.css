@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #14161a;
+  --color-bg-alt: #1a1d22;
+  --color-surface: #1f2329;
+  --color-selected: #262b33;
+  --color-editor: #101216;
+  --color-line: #2a2f37;
+  --color-fg: #eceef1;
+  --color-fg-2: #9aa3af;
+  --color-accent: #7c9cff;
+  --color-success: #4ade80;
+  --color-error: #f87171;
+  --color-active: #5eead4;
+  --color-warning: #fbbf24;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  background: var(--color-bg);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Tailwind's preflight resets buttons to the default cursor; real controls should look clickable */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+summary {
+  cursor: pointer;
+}
+
+/* Screenshot mocks: decorative, never react to the pointer or get selected */
+.mock {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* ---------- Hero: rune glow ---------- */
+
+.rune-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #dbe4ff 0%, #9db4ff 45%, #7c9cff 100%);
+  /* rune shapes ∩ a vertical sweep; the sweep ends fully revealed */
+  mask-image: url("/brand/rune-mask.webp"), linear-gradient(to top, #000 42%, transparent 58%);
+  mask-size: cover, 100% 300%;
+  mask-position: 50% 0, 0 100%;
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
+}
+.runes-boost {
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+.rune-bloom {
+  filter: blur(9px);
+}
+
+.job-fail {
+  animation: fail-pulse 1.4s ease-out 1;
+}
+
+@keyframes fail-pulse {
+  from {
+    box-shadow: 0 0 0 0 rgb(248 113 113 / 0.55);
+  }
+  to {
+    box-shadow: 0 0 0 12px rgb(248 113 113 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rune-glow {
+    animation: rune-ignite 2.6s 0.35s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+  }
+  .runes {
+    animation: rune-breathe 5s 3s ease-in-out infinite;
+  }
+  .hero-title {
+    animation: title-in 1.1s 0.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-in {
+    animation: fade-up 0.8s var(--d, 0.6s) cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  /* Scroll-linked motion where the browser supports scroll timelines; elsewhere the page stays still */
+  @supports (animation-timeline: scroll()) {
+    .hero-stone {
+      animation: stone-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    .hero-photo {
+      animation: photo-dim linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .runes-boost {
+      animation: runes-boost linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 60vh;
+    }
+    .hero-head {
+      animation: head-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 4vh 50vh;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-fail {
+    animation: none;
+  }
+}
+
+@keyframes rune-ignite {
+  from {
+    mask-position: 50% 0, 0 0;
+  }
+  to {
+    mask-position: 50% 0, 0 100%;
+  }
+}
+@keyframes rune-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+@keyframes title-in {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(24px) scale(0.98);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes stone-drift {
+  to {
+    transform: translateY(16%) scale(1.04);
+  }
+}
+@keyframes photo-dim {
+  to {
+    filter: brightness(0.55) saturate(0.8);
+  }
+}
+@keyframes runes-boost {
+  35% {
+    opacity: 1;
+    filter: brightness(1.35);
+  }
+  to {
+    opacity: 0.25;
+    filter: brightness(1);
+  }
+}
+@keyframes head-out {
+  to {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.97);
+    filter: blur(6px);
+  }
+}
+
+@utility btn-primary {
+  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  color: #fff;
+  &:is(a, button):hover {
+    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  }
+}
+
+@utility btn-secondary {
+  background: rgb(0 0 0 / 0.25);
+  border: 1px solid var(--color-line);
+  color: var(--color-fg);
+  &:is(a, button):hover {
+    background: rgb(0 0 0 / 0.4);
+  }
+}
+
+@utility container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1312px;
+  padding-inline: 24px;
+  @media (min-width: 768px) {
+    padding-inline: 40px;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 0;
+  }
+}
