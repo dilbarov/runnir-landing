@@ -60,7 +60,7 @@ export function Hero({ release }: { release: Release }) {
           </p>
           <div
             style={{ "--d": "0.75s" } as React.CSSProperties}
-            className="hero-in mt-6 flex w-full flex-col items-stretch gap-3.5 sm:w-auto sm:flex-row sm:items-center"
+            className="hero-in mt-6 grid w-full gap-3.5 sm:w-auto sm:grid-cols-2"
           >
             <DownloadButton release={release} location="hero" />
             <GitHubLink location="hero" label="View on GitHub" />

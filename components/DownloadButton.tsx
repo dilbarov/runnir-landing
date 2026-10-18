@@ -20,7 +20,7 @@ export function DownloadButton({ release, location, size = "lg", align = "center
   const cls =
     size === "sm"
       ? "px-4 py-[9px] text-sm font-semibold rounded-[10px] gap-2"
-      : "px-5 sm:px-[26px] py-[15px] text-base font-semibold rounded-[10px] gap-2.5 whitespace-nowrap";
+      : "w-full px-5 sm:px-[26px] py-[15px] text-base font-semibold rounded-[10px] gap-2.5 whitespace-nowrap";
 
   useEffect(() => {
     if (!open) return;
@@ -48,7 +48,7 @@ export function DownloadButton({ release, location, size = "lg", align = "center
   }
 
   return (
-    <div ref={ref} className="relative inline-block">
+    <div ref={ref} className={`relative ${size === "sm" ? "inline-block" : "block w-full"}`}>
       <button
         type="button"
         aria-expanded={open}

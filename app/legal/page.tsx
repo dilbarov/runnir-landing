@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalShell } from "@/components/LegalShell";
 import { COMPANY } from "@/lib/content";
+import { social } from "@/lib/seo";
 import { DOC_NAMES, LEGAL, longDate, permalink, sha256 } from "@/lib/legal";
 
 export const revalidate = 300;
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "Legal documents and their versions",
   description: `Every published version of the Runnir Privacy Policy and Terms of Use by ${COMPANY}, with permanent links and SHA-256 fingerprints.`,
   alternates: { canonical: "/legal" },
+  ...social("Legal documents and their versions", `Every published version of the Runnir Privacy Policy and Terms of Use by ${COMPANY}.`, "/legal"),
 };
 
 export default function Page() {

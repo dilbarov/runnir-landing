@@ -58,7 +58,7 @@ export function DownloadSection({ release }: { release: Release }) {
           Try Runnir on your Mac.
         </h2>
         <p className="text-[17px] text-fg-2">Free, open source, macOS 15 or newer.</p>
-        <div className="flex w-full flex-col items-stretch gap-3.5 sm:w-auto sm:flex-row">
+        <div className="grid w-full gap-3.5 sm:w-auto sm:grid-cols-2">
           <DownloadButton release={release} location="download" label="Download latest release" />
           <GitHubLink location="download" label="View on GitHub" />
         </div>

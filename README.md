@@ -33,6 +33,10 @@ Runnir is developed and promoted by DIL EIGHT LLC. Legal documents follow the mu
 - Texts live in `lib/legal/<doc>-<date>.ts`. A published version is never edited: add a new dated file and put it first in `LEGAL` in `lib/legal/index.ts`.
 - The cookie banner (Accept all / Only necessary) and the footer "Cookie settings" appear only when `NEXT_PUBLIC_POSTHOG_KEY` is set. Without consent PostHog stays cookieless (`persistence: "memory"`).
 
+## Link preview
+
+`public/og.jpg` (1200×630) is the Open Graph / Twitter image on every page. It is rendered by the `/og.png` route (`app/og.png/route.tsx`, assets in `lib/og/`); after changing the design, open `/og.png` locally and save it as JPEG to `public/og.jpg`, keeping it under ~300 KB.
+
 ## Deploy
 
 Import the repo in Vercel (framework preset: Next.js, default settings).

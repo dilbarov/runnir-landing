@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { COMPANY } from "../content";
+import { social } from "../seo";
 import { DOC_NAMES, LEGAL, permalink, type LegalDoc } from ".";
 
 export function legalMetadata(doc: LegalDoc, path: string): Metadata {
@@ -13,6 +14,6 @@ export function legalMetadata(doc: LegalDoc, path: string): Metadata {
     description,
     // The in-force version is canonical at /privacy or /terms; old versions are their own page
     alternates: { canonical: isCurrent ? `/${doc.slug}` : path },
-    openGraph: { title: `${doc.title}`, description, url: isCurrent ? `/${doc.slug}` : permalink(doc) },
+    ...social(doc.title, description, isCurrent ? `/${doc.slug}` : permalink(doc)),
   };
 }

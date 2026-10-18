@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { COMPANY, DESCRIPTION, NAME, SITE_URL, TITLE } from "@/lib/content";
+import { social } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], variable: "--font-inter", display: "swap" });
@@ -17,15 +18,7 @@ export const metadata: Metadata = {
   creator: COMPANY,
   publisher: COMPANY,
   alternates: { canonical: "/", types: { "text/markdown": "/index.md", "text/plain": "/llms.txt" } },
-  openGraph: {
-    type: "website",
-    url: SITE_URL,
-    siteName: NAME,
-    title: TITLE,
-    description: DESCRIPTION,
-    locale: "en_US",
-  },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  ...social(TITLE, DESCRIPTION, SITE_URL),
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
   category: "technology",
 };
