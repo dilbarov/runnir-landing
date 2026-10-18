@@ -22,12 +22,14 @@ export function BackToTop() {
       title="Back to top"
       tabIndex={visible ? 0 : -1}
       aria-hidden={!visible}
-      onClick={() => {
+      onClick={(e) => {
+        // The button hides once the page is back at the top; don't leave focus on a hidden control
+        e.currentTarget.blur();
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
         track("back_to_top");
       }}
-      className={`fixed bottom-5 right-5 z-40 grid size-11 place-items-center rounded-full border border-line bg-surface/85 text-fg-2 shadow-lg backdrop-blur-md transition-[opacity,transform,color] duration-300 hover:text-fg md:bottom-8 md:right-8 ${
+      className={`fixed bottom-5 right-5 z-40 grid size-11 place-items-center rounded-full border border-line bg-surface/85 text-fg-2 shadow-lg backdrop-blur-md transition-[opacity,translate,color] duration-300 hover:text-fg md:bottom-8 md:right-8 ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
       }`}
     >
