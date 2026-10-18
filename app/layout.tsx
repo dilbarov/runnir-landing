@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { BackToTop } from "@/components/BackToTop";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { COMPANY, DESCRIPTION, NAME, SITE_URL, TITLE } from "@/lib/content";
 import { social } from "@/lib/seo";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body>
         {children}
+        <BackToTop />
         <ConsentBanner />
       </body>
     </html>
