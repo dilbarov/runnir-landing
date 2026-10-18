@@ -28,9 +28,9 @@ export function Nav({ release, solid: alwaysSolid = false }: { release: Release;
         solid ? "border-line/80 bg-bg/75 backdrop-blur-xl backdrop-saturate-150" : "border-transparent bg-transparent"
       }`}
     >
-      <nav aria-label="Main" className="container-x flex h-[72px] items-center justify-between max-lg:h-14">
+      <nav aria-label="Main" className="container-x flex h-[72px] items-center justify-between gap-4 max-lg:h-14">
         <a href="/" aria-label="Runnir home" className="shrink-0">
-          <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={130} height={49} priority className="h-[49px] w-auto max-lg:h-10" />
+          <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={130} height={49} priority className="h-8 w-auto min-[400px]:h-10 lg:h-[49px]" />
         </a>
         <ul className="hidden items-center gap-9 xl:flex">
           {NAV.map((l) => (
@@ -45,7 +45,7 @@ export function Nav({ release, solid: alwaysSolid = false }: { release: Release;
             </li>
           ))}
         </ul>
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <div className="hidden lg:block">
             <GitHubLink location="nav" label="Star on GitHub" size="sm" />
           </div>
