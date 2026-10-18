@@ -28,6 +28,7 @@ const icons: Record<string, ReactNode> = {
     </>
   ),
   running: <path d="M21 12a9 9 0 1 1-6.219-8.56" />,
+  queued: <circle cx="12" cy="12" r="9" strokeDasharray="3.5 3.5" />,
   lock: (
     <>
       <rect x="3" y="11" width="18" height="11" rx="2" />

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Icon } from "./Icon";
-import { PRESETS, RUNS, RunButton, RunRow, StageGrid, StatusIcon, WorkflowTabs } from "./mocks";
+import { LiveOverview } from "./LiveOverview";
+
 
 const sidebar = [
   { icon: "layout", name: "Overview", active: true },
@@ -15,14 +16,15 @@ export function AppWindow() {
       {/* Glow fades out before the window's bottom edge, so the section boundary never cuts it */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-24 -top-20 bottom-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_0%,rgba(124,156,255,0.14),transparent_100%)]"
+        className="pointer-events-none absolute -inset-x-24 -top-20 bottom-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_80px,rgba(124,156,255,0.14),transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent,#000_80px,#000_70%,transparent)]"
       />
       <div
         role="img"
         aria-label="Runnir app window showing the Overview of acme/mobile-app: pipeline stages, recent runs and manual runs"
-        className="relative overflow-hidden rounded-t-xl border border-b-0 border-line bg-[#181b20] text-left"
+        data-nosnippet
+        className="mock relative overflow-hidden rounded-t-xl border border-b-0 border-line bg-[#181b20] text-left"
       >
-        <div className="flex">
+        <div className="flex" inert>
           <aside className="hidden w-[220px] shrink-0 flex-col gap-1 bg-bg-alt px-3 py-3.5 md:flex">
             <div className="flex gap-2 px-1 pb-4">
               <span className="size-3 rounded-full bg-error" />
@@ -62,49 +64,7 @@ export function AppWindow() {
               </div>
             </div>
 
-            <div className="space-y-[18px] px-5 pb-0 pt-1">
-              <div className="flex flex-wrap items-center gap-x-[18px] gap-y-2">
-                <WorkflowTabs />
-                <span className="hidden h-2.5 w-px bg-line sm:block" />
-                <span className="hidden items-center gap-1.5 text-xs text-error sm:flex">
-                  <StatusIcon s="fail" size={14} /> Failure
-                  <span className="font-mono text-[11px] text-fg-2">run #1482 · a3f9c21</span>
-                </span>
-              </div>
-              <StageGrid />
-              <p className="hidden text-[12.5px] text-fg-2 md:block">
-                ⓘ Manual jobs unlock when the stages before them pass. Archive failed — fix it or re-run to continue.
-              </p>
-              <div className="hidden h-px bg-line md:block" />
-              <div className="grid gap-6 pb-6 md:grid-cols-[1fr_320px]">
-                <div>
-                  <div className="flex justify-between pb-1.5 text-[10.5px] font-semibold tracking-wider text-fg-2">
-                    RECENT RUNS <span className="text-xs font-normal tracking-normal text-accent">All runs</span>
-                  </div>
-                  <ul className="divide-y divide-line/0">
-                    {RUNS.map((r) => (
-                      <RunRow key={r.wf} r={r} />
-                    ))}
-                  </ul>
-                </div>
-                <div className="hidden md:block">
-                  <div className="flex justify-between pb-1.5 text-[10.5px] font-semibold tracking-wider text-fg-2">
-                    RUN MANUALLY <span className="text-xs font-normal tracking-normal text-accent">New…</span>
-                  </div>
-                  <ul>
-                    {PRESETS.map((p) => (
-                      <li key={p.name} className="flex items-center justify-between py-2.5">
-                        <div>
-                          <p className="text-[13.5px] font-medium text-fg">{p.name}</p>
-                          <p className="text-[11.5px] text-fg-2">{p.meta.split(" · ").slice(1).join(" · ") || p.meta}</p>
-                        </div>
-                        <RunButton />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <LiveOverview />
           </div>
         </div>
       </div>

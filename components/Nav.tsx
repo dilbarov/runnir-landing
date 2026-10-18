@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NAV } from "@/lib/content";
 import { track } from "@/lib/analytics";
 import { DownloadButton } from "./DownloadButton";
@@ -12,8 +12,22 @@ type Release = { tag: string; downloadUrl: string } | null;
 
 export function Nav({ release }: { release: Release }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const solid = scrolled || open;
   return (
-    <header className="absolute inset-x-0 top-0 z-30">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        solid ? "border-line/80 bg-bg/75 backdrop-blur-xl backdrop-saturate-150" : "border-transparent bg-transparent"
+      }`}
+    >
       <nav aria-label="Main" className="container-x flex h-[72px] items-center justify-between max-lg:h-14">
         <a href="#top" aria-label="Runnir home" className="shrink-0">
           <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={130} height={49} priority className="h-[49px] w-auto max-lg:h-10" />
@@ -48,8 +62,8 @@ export function Nav({ release }: { release: Release }) {
         </div>
       </nav>
       {open && (
-        <div className="container-x lg:hidden">
-          <ul className="rounded-xl border border-line bg-surface/95 p-2 backdrop-blur">
+        <div className="container-x pb-3 lg:hidden">
+          <ul className="rounded-xl border border-line bg-surface/95 p-2">
             {NAV.map((l) => (
               <li key={l.href}>
                 <a

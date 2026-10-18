@@ -1,19 +1,20 @@
 import { Icon } from "./Icon";
 
-type Status = "ok" | "fail" | "running" | "pending";
+export type Status = "ok" | "fail" | "running" | "queued" | "pending";
+export type Stage = { name: string; jobs: { n: string; t?: string; s: Status }[] };
 
 const tone: Record<Status, string> = {
   ok: "text-success",
   fail: "text-error",
   running: "text-active",
+  queued: "text-fg-2/60",
   pending: "text-fg-2",
 };
-const label: Record<Status, string> = { ok: "Succeeded", fail: "Failed", running: "Running", pending: "Not started" };
 
 export function StatusIcon({ s, size = 16 }: { s: Status; size?: number }) {
   return (
-    <span role="img" aria-label={label[s]} className={tone[s]}>
-      <Icon name={s === "pending" ? "lock" : s} size={size} />
+    <span className={`inline-flex ${tone[s]}`}>
+      <Icon name={s === "pending" ? "lock" : s} size={size} className={s === "running" ? "animate-spin" : undefined} />
     </span>
   );
 }
@@ -25,7 +26,7 @@ export const RUNS: { wf: string; sub: string; when: string; s: Status; branch: s
   { wf: "nightly-e2e", sub: "Update provisioning profile", when: "3h ago", s: "fail", branch: "develop · 9e2f5b3" },
 ];
 
-export const STAGES: { name: string; jobs: { n: string; t?: string; s: Status }[] }[] = [
+export const STAGES: Stage[] = [
   { name: "CHECK", jobs: [{ n: "lint", t: "41s", s: "ok" }, { n: "unit-tests", t: "3m 12s", s: "ok" }] },
   { name: "BUILD", jobs: [{ n: "build-ios", t: "6m 40s", s: "ok" }] },
   { name: "ARCHIVE", jobs: [{ n: "archive", t: "4m 41s", s: "fail" }] },
@@ -52,23 +53,23 @@ export function RunRow({ r, compact }: { r: (typeof RUNS)[number]; compact?: boo
   );
 }
 
-export function StageGrid({ merged }: { merged?: boolean }) {
+export function StageGrid({ merged, stages = STAGES }: { merged?: boolean; stages?: Stage[] }) {
   return (
     <div className={`grid grid-cols-2 gap-x-3 gap-y-3 ${merged ? "" : "sm:grid-cols-4"}`}>
-      {STAGES.map((st) => (
+      {stages.map((st) => (
         <div key={st.name}>
           <p className="mb-2 text-[10.5px] font-semibold tracking-wider text-fg-2">{st.name}</p>
           <div className="space-y-2">
             {(merged ? [{ n: st.jobs.map((j) => j.n).join(" · "), s: st.jobs[0].s, t: undefined }] : st.jobs).map((j) => (
               <div
                 key={j.n}
-                className={`flex items-center gap-2 rounded-lg bg-surface px-2.5 py-[9px] text-[12.5px] text-fg ${
-                  j.s === "fail" ? "border border-error/70" : "border border-transparent"
+                className={`flex items-center gap-2 rounded-lg border bg-surface px-2.5 py-[9px] text-[12.5px] transition-colors duration-300 ${
+                  j.s === "fail" ? "job-fail border-error/70 text-fg" : j.s === "queued" ? "border-transparent text-fg-2" : "border-transparent text-fg"
                 }`}
               >
                 <StatusIcon s={j.s} size={14} />
                 <span className="min-w-0 flex-1 truncate">{j.n}</span>
-                {j.t && <span className="text-[11px] text-fg-2">{j.t}</span>}
+                {j.t && <span className="text-[11px] tabular-nums text-fg-2">{j.t}</span>}
               </div>
             ))}
           </div>

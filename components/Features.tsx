@@ -41,11 +41,11 @@ function Copy({ f }: { f: Feature }) {
   );
 }
 
-const panel = "min-w-0 flex-1 rounded-[14px] border border-line bg-bg-alt";
+const panel = "mock min-w-0 flex-1 rounded-[14px] border border-line bg-bg-alt";
 
 function Launch() {
   return (
-    <div className={`${panel} p-6 md:p-7`} role="img" aria-label="Saved launches: Deploy to staging, Production hotfix, Nightly e2e now and Release tag v0.1.0, each with a Run button">
+    <div className={`${panel} p-6 md:p-7`} role="img" data-nosnippet aria-label="Saved launches: Deploy to staging, Production hotfix, Nightly e2e now and Release tag v0.1.0, each with a Run button">
       <p className="text-[11px] font-semibold tracking-wider text-fg-2">RUN MANUALLY</p>
       <ul>
         {PRESETS.map((p) => (
@@ -65,7 +65,7 @@ function Launch() {
 
 function Loop() {
   return (
-    <div className={`${panel} space-y-5 p-6 md:p-7`} role="img" aria-label="Illustrative comparison: about 5 to 8 minutes per attempt today versus under a minute with Runnir">
+    <div className={`${panel} space-y-5 p-6 md:p-7`} role="img" data-nosnippet aria-label="Illustrative comparison: about 5 to 8 minutes per attempt today versus under a minute with Runnir">
       <p className="text-[11px] font-semibold tracking-wider text-fg-2">THE LOOP YOU HAVE TODAY</p>
       <div className="flex flex-wrap gap-2">
         <Chip>edit</Chip>
@@ -93,7 +93,7 @@ function Loop() {
 
 function Window() {
   return (
-    <div className={`${panel} space-y-4 p-5 md:p-6`} role="img" aria-label="Pipeline stages for ios-release with the latest runs across workflows">
+    <div className={`${panel} space-y-4 p-5 md:p-6`} role="img" data-nosnippet aria-label="Pipeline stages for ios-release with the latest runs across workflows">
       <WorkflowTabs />
       <StageGrid merged />
       <ul>
