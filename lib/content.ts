@@ -3,6 +3,11 @@ export const REPO = "dil-eight/runnir";
 export const REPO_URL = `https://github.com/${REPO}`;
 export const RELEASES_URL = `${REPO_URL}/releases`;
 
+export const COMPANY = "DIL EIGHT LLC";
+export const COMPANY_FULL = "DIL EIGHT LLC, a Florida limited liability company";
+export const COMPANY_EMAIL = "support@dil8.io";
+export const COMPANY_GITHUB = "https://github.com/dil-eight";
+
 export const NAME = "Runnir";
 export const TITLE = "Runnir — a faster way to run GitHub Actions on your Mac";
 export const TAGLINE = "A faster way to run GitHub Actions.";
@@ -10,10 +15,10 @@ export const DESCRIPTION =
   "Runnir is an open-source native macOS app to launch GitHub Actions workflows, test them locally and watch every pipeline from one window. Free, GPLv3, no telemetry by default.";
 
 export const NAV = [
-  { href: "#launch", label: "Launch" },
-  { href: "#save-minutes", label: "Save minutes" },
-  { href: "#one-place", label: "One place" },
-  { href: "#open-source", label: "Open source" },
+  { href: "/#launch", label: "Launch" },
+  { href: "/#save-minutes", label: "Save minutes" },
+  { href: "/#one-place", label: "One place" },
+  { href: "/#open-source", label: "Open source" },
 ];
 
 export type Feature = {
@@ -78,6 +83,10 @@ export const FAQ = [
   {
     q: "What is Runnir?",
     a: "Runnir is an open-source native macOS workspace for GitHub Actions and local workflow development. It lets you launch workflows, validate and test them locally, and watch every pipeline from one window.",
+  },
+  {
+    q: "Who develops Runnir?",
+    a: "Runnir is developed and promoted by DIL EIGHT LLC, a Florida limited liability company. The source code is open under GPLv3 and welcomes outside contributions on GitHub.",
   },
   {
     q: "Can I download Runnir today?",

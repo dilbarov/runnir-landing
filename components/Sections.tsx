@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { FAQ, REPO_URL, RELEASES_URL, TRUST } from "@/lib/content";
+import { COMPANY, FAQ, REPO_URL, RELEASES_URL, TRUST } from "@/lib/content";
+import { CookieSettingsButton } from "./ConsentBanner";
 import { CloneCommand } from "./CloneCommand";
 import { DownloadButton } from "./DownloadButton";
 import { GitHubLink } from "./GitHubLink";
@@ -78,11 +79,20 @@ export function Footer() {
     { href: `${REPO_URL}/blob/main/CONTRIBUTING.md`, label: "Contributing" },
     { href: `${REPO_URL}/blob/main/SECURITY.md`, label: "Security" },
   ];
+  const legal = [
+    { href: "/privacy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms of Use" },
+    { href: "/legal", label: "All versions" },
+    { href: `${REPO_URL}/blob/main/LICENSE`, label: "License (GPLv3)", external: true },
+  ];
+  const year = new Date().getFullYear();
   return (
     <footer className="border-t border-line bg-bg">
       <div className="container-x flex flex-col items-center gap-6 py-7 md:flex-row md:justify-between">
-        <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={92} height={35} className="h-[35px] w-auto" />
-        <nav aria-label="Footer">
+        <a href="/" aria-label="Runnir home">
+          <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={92} height={35} className="h-[35px] w-auto" />
+        </a>
+        <nav aria-label="Project">
           <ul className="flex flex-wrap justify-center gap-x-7 gap-y-2 text-[13px] text-fg">
             {links.map((l) => (
               <li key={l.label}>
@@ -93,9 +103,29 @@ export function Footer() {
             ))}
           </ul>
         </nav>
-        <div className="text-center text-[13px] text-fg-2 md:text-right">
-          <p>© Runnir contributors · GPLv3</p>
-          <p className="mt-1 text-xs">This site uses cookieless analytics and respects Do Not Track.</p>
+        <p className="text-center text-[13px] text-fg-2 md:text-right">
+          Developed and promoted by <span className="text-fg">{COMPANY}</span>
+        </p>
+      </div>
+      <div className="border-t border-line/60">
+        <div className="container-x flex flex-col items-center gap-4 py-6 text-[12.5px] text-fg-2 md:flex-row md:justify-between">
+          <p className="text-center md:text-left">
+            © {year} {COMPANY}. Runnir source code is licensed under GPLv3.
+          </p>
+          <nav aria-label="Legal">
+            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+              {legal.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} {...(l.external ? { target: "_blank", rel: "noopener" } : {})} className="hover:text-fg">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <CookieSettingsButton className="hover:text-fg" />
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

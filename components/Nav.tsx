@@ -10,7 +10,7 @@ import { Icon } from "./Icon";
 
 type Release = { tag: string; downloadUrl: string } | null;
 
-export function Nav({ release }: { release: Release }) {
+export function Nav({ release, solid: alwaysSolid = false }: { release: Release; solid?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,7 +21,7 @@ export function Nav({ release }: { release: Release }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const solid = scrolled || open;
+  const solid = alwaysSolid || scrolled || open;
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
@@ -29,7 +29,7 @@ export function Nav({ release }: { release: Release }) {
       }`}
     >
       <nav aria-label="Main" className="container-x flex h-[72px] items-center justify-between max-lg:h-14">
-        <a href="#top" aria-label="Runnir home" className="shrink-0">
+        <a href="/" aria-label="Runnir home" className="shrink-0">
           <Image src="/brand/logo-horizontal-light.png" alt="Runnir" width={130} height={49} priority className="h-[49px] w-auto max-lg:h-10" />
         </a>
         <ul className="hidden items-center gap-9 xl:flex">

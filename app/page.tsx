@@ -1,4 +1,4 @@
-import { DESCRIPTION, FAQ, NAME, REPO_URL, SITE_URL } from "@/lib/content";
+import { COMPANY, COMPANY_EMAIL, COMPANY_GITHUB, DESCRIPTION, FAQ, NAME, REPO_URL, SITE_URL } from "@/lib/content";
 import { getLatestRelease } from "@/lib/release";
 import { Features } from "@/components/Features";
 import { Hero } from "@/components/Hero";
@@ -25,10 +25,12 @@ export default async function Home() {
       {
         "@type": "Organization",
         "@id": `${SITE_URL}/#org`,
-        name: NAME,
-        url: SITE_URL,
-        logo: `${SITE_URL}/brand/logo-mark-dark.png`,
-        sameAs: [REPO_URL],
+        name: COMPANY,
+        legalName: COMPANY,
+        email: COMPANY_EMAIL,
+        address: { "@type": "PostalAddress", addressRegion: "FL", addressCountry: "US" },
+        sameAs: [COMPANY_GITHUB],
+        brand: { "@type": "Brand", name: NAME, logo: `${SITE_URL}/brand/logo-mark-dark.png` },
       },
       {
         "@type": "SoftwareApplication",
@@ -44,6 +46,7 @@ export default async function Home() {
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         ...(release ? { softwareVersion: release.tag, downloadUrl: release.downloadUrl } : {}),
         author: { "@id": `${SITE_URL}/#org` },
+        publisher: { "@id": `${SITE_URL}/#org` },
       },
       {
         "@type": "FAQPage",

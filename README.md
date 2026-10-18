@@ -25,6 +25,14 @@ pnpm build && pnpm start
 
 `/llms.txt`, `/llms-full.txt`, `/index.md`, `robots.txt` (AI crawlers allowed), `sitemap.xml`, JSON-LD (WebSite, Organization, SoftwareApplication, FAQPage), OG image, security headers. Content lives in `lib/content.ts` and feeds the page, the markdown files and the structured data.
 
+## Legal
+
+Runnir is developed and promoted by DIL EIGHT LLC. Legal documents follow the munrir.com scheme:
+
+- `/privacy`, `/terms`: the versions in force; `/legal`: every version with its SHA-256 fingerprint; `/legal/{doc}/{YYYY-MM-DD}`: permanent links; `/legal/current.json`: machine-readable index.
+- Texts live in `lib/legal/<doc>-<date>.ts`. A published version is never edited: add a new dated file and put it first in `LEGAL` in `lib/legal/index.ts`.
+- The cookie banner (Accept all / Only necessary) and the footer "Cookie settings" appear only when `NEXT_PUBLIC_POSTHOG_KEY` is set. Without consent PostHog stays cookieless (`persistence: "memory"`).
+
 ## Deploy
 
 Import the repo in Vercel (framework preset: Next.js, default settings).
