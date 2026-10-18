@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #14161a;
+  --color-bg-alt: #1a1d22;
+  --color-surface: #1f2329;
+  --color-selected: #262b33;
+  --color-editor: #101216;
+  --color-line: #2a2f37;
+  --color-fg: #eceef1;
+  --color-fg-2: #9aa3af;
+  --color-accent: #7c9cff;
+  --color-success: #4ade80;
+  --color-error: #f87171;
+  --color-active: #5eead4;
+  --color-warning: #fbbf24;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  background: var(--color-bg);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@utility btn-primary {
+  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  color: #fff;
+  &:is(a, button):hover {
+    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  }
+}
+
+@utility btn-secondary {
+  background: rgb(0 0 0 / 0.25);
+  border: 1px solid var(--color-line);
+  color: var(--color-fg);
+  &:is(a, button):hover {
+    background: rgb(0 0 0 / 0.4);
+  }
+}
+
+@utility container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1312px;
+  padding-inline: 24px;
+  @media (min-width: 768px) {
+    padding-inline: 40px;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 0;
+  }
+}
