@@ -8,7 +8,7 @@ type Release = { tag: string; downloadUrl: string } | null;
 
 export function Hero({ release }: { release: Release }) {
   return (
-    <section id="top" aria-labelledby="hero-h" className="relative overflow-hidden">
+    <section id="top" aria-labelledby="hero-h" className="relative overflow-clip">
       {/* Wider than the design frame: a blurred copy of the scene continues the fog to the edges */}
       <div aria-hidden="true" className="hero-stone pointer-events-none absolute inset-x-0 top-0 hidden h-[810px] min-[1440px]:block">
         <Image src="/brand/runestone-hero.webp" alt="" fill sizes="640px" className="scale-110 object-cover opacity-70 blur-2xl" />
