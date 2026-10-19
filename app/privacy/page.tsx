@@ -5,7 +5,7 @@ import { legalMetadata } from "@/lib/legal/meta";
 
 const doc = current("privacy");
 
-export const revalidate = 300;
+export const revalidate = 1800;
 export const metadata = legalMetadata(doc, "/privacy");
 
 export default function Page() {

@@ -3,15 +3,16 @@
 Source design: `runnir/docs/design/runnir-landing.pen` (frames: Desktop 1440, Tablet 768, Mobile 390, dark). Deployed on Vercel.
 
 ## Stack
-Next.js 15 App Router, TypeScript, Tailwind v4, pnpm. Fully static except the release lookup (ISR, 5 min). Only runtime dependency besides Next/React: `posthog-js`.
+Next.js 15 App Router, TypeScript, Tailwind v4, pnpm. Fully static except the release lookup (ISR, 30 min). Only runtime dependency besides Next/React: `posthog-js`.
 
 ## Page
 Nav · Hero (runestone image, headline, CTAs, app window mock) · 01 Launch · 02 Save minutes · 03 One place · Open-source strip · FAQ (addition, for AI/SEO) · Download · Footer. Mocks are JSX, not images. Colour tokens come from the .pen variables.
 
 ## Download button
-`lib/release.ts` calls `GET https://api.github.com/repos/dil-eight/runnir/releases/latest` with `revalidate: 300`.
+`lib/release.ts` calls `GET https://api.github.com/repos/dil-eight/runnir/releases/latest` with `revalidate: 1800`.
 - Release with a `.dmg`/`.zip` asset → direct link, shows tag.
-- 404 / no asset / error → placeholder "Download · In development": a button that opens an accessible popover ("The first release is in development") with a link to star the repo. Never a dead link.
+- GitHub error (rate limit, outage, network) in production → throws, so ISR keeps the last generated page and its download link.
+- 404 / no asset → placeholder "Download · In development": a button that opens an accessible popover ("The first release is in development") with a link to star the repo. Never a dead link.
 Repo link everywhere: `https://github.com/dil-eight/runnir`.
 
 ## PostHog

@@ -19,7 +19,7 @@ function lookupFailed(reason: string): Release {
   return null;
 }
 
-/** The latest published release with a macOS download; null when there is none. Cached for 5 minutes. */
+/** The latest published release with a macOS download; null when there is none. Cached for 30 minutes. */
 export async function getLatestRelease(): Promise<Release> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -29,7 +29,7 @@ export async function getLatestRelease(): Promise<Release> {
 
   let res: Response;
   try {
-    res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers, next: { revalidate: 300 } });
+    res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers, next: { revalidate: 1800 } });
   } catch (e) {
     return lookupFailed(e instanceof Error ? e.message : String(e));
   }

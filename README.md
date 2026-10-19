@@ -19,7 +19,7 @@ pnpm build && pnpm start
 
 ## Download button
 
-`lib/release.ts` reads the latest GitHub release (revalidated every 5 min). With a `.dmg`/`.zip` asset the buttons link to it; otherwise they show an "In development" placeholder that opens an explanation and a link to the repo.
+`lib/release.ts` reads the latest GitHub release (revalidated every 30 min). With a `.dmg`/`.zip` asset the buttons link to it; otherwise they show an "In development" placeholder that opens an explanation and a link to the repo.
 
 ## AI / SEO
 
