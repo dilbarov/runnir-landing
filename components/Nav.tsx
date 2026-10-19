@@ -25,7 +25,11 @@ export function Nav({ release, solid: alwaysSolid = false }: { release: Release;
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
-        solid ? "border-line/80 bg-bg/75 backdrop-blur-xl backdrop-saturate-150" : "border-transparent bg-transparent"
+        solid
+          ? // In-app browsers on iOS draw the page under their own translucent top bar, above where top: 0
+            // puts this header; a solid strip above the header keeps scrolled content out of that gap
+            "border-line/80 bg-bg/75 backdrop-blur-xl backdrop-saturate-150 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-48 before:bg-bg before:content-['']"
+          : "border-transparent bg-transparent"
       }`}
     >
       <nav aria-label="Main" className="container-x flex h-[72px] items-center justify-between gap-4 max-lg:h-14">
