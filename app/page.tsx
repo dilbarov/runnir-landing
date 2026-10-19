@@ -5,7 +5,7 @@ import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
 import { DownloadSection, Faq, Footer, Trust } from "@/components/Sections";
 
-export const revalidate = 300;
+export const revalidate = 1800;
 
 export default async function Home() {
   const release = await getLatestRelease();

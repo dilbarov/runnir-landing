@@ -6,7 +6,7 @@ import { legalMetadata } from "@/lib/legal/meta";
 
 type Params = Promise<{ doc: string; version: string }>;
 
-export const revalidate = 300;
+export const revalidate = 1800;
 export const dynamicParams = false;
 
 export function generateStaticParams() {

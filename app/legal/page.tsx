@@ -4,7 +4,7 @@ import { COMPANY } from "@/lib/content";
 import { social } from "@/lib/seo";
 import { DOC_NAMES, LEGAL, longDate, permalink, sha256 } from "@/lib/legal";
 
-export const revalidate = 300;
+export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Legal documents and their versions",
   description: `Every published version of the Runnir Privacy Policy and Terms of Use by ${COMPANY}, with permanent links and SHA-256 fingerprints.`,
