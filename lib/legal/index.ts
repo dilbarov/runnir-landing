@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import privacy20261018 from "./privacy-2026-10-18";
+import privacy20261106 from "./privacy-2026-11-06";
 import terms20261018 from "./terms-2026-10-18";
+import terms20261106 from "./terms-2026-11-06";
 import type { Block, LegalDoc } from "./types";
 
 export type { Block, LegalDoc } from "./types";
@@ -10,8 +12,8 @@ export type { Block, LegalDoc } from "./types";
  * a changed text is added as a new file with a new date, and the old one stays at its URL.
  */
 export const LEGAL: Record<LegalDoc["slug"], LegalDoc[]> = {
-  privacy: [privacy20261018],
-  terms: [terms20261018],
+  privacy: [privacy20261106, privacy20261018],
+  terms: [terms20261106, terms20261018],
 };
 
 export const DOC_NAMES: Record<LegalDoc["slug"], string> = { privacy: "Privacy Policy", terms: "Terms of Use" };
