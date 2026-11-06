@@ -1,3 +1,5 @@
+import type { Release } from "./release";
+
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://runnir.vercel.app").replace(/\/$/, "");
 export const REPO = "dil-eight/runnir";
 export const REPO_URL = `https://github.com/${REPO}`;
@@ -34,6 +36,12 @@ export type Feature = {
 
 // Built and tested, not released: the first signed build from a tag is still to come.
 const BUILT = { text: "Built for v0.1", tone: "built" } as const;
+
+/** A feature's badge follows what GitHub Releases offers: built, in an alpha or beta, or available. */
+export function featureStatus(release: Release): Feature["status"] {
+  if (!release) return BUILT;
+  return { text: release.prerelease ? `In the ${channel(release.tag)}` : "Available", tone: "built" };
+}
 
 export const FEATURES: Feature[] = [
   {
@@ -96,7 +104,7 @@ export const TRUST = [
   { icon: "code", title: "Open source, Apache 2.0", body: "Native SwiftUI app with a portable Go Core." },
 ] as const;
 
-export const FAQ = [
+const BASE_FAQ = [
   {
     q: "What is Runnir?",
     a: "Runnir is an open-source native macOS app for GitHub Actions. It launches workflows with typed inputs, checks and runs them locally with act, shows what a pull request will start and where a run failed, and keeps your pull requests and runs in the menu bar.",
@@ -134,3 +142,49 @@ export const FAQ = [
     a: "Only for local runs. Runnir bundles act and uses your own container engine: OrbStack, Docker Desktop or Colima. Browsing workflows, running them on GitHub and reading logs do not need it.",
   },
 ];
+
+/** "alpha", "beta" or "pre-release", from a pre-release's tag such as v0.1.0-alpha.1. */
+export function channel(tag: string) {
+  return /-alpha/i.test(tag) ? "alpha" : /-beta/i.test(tag) ? "beta" : "pre-release";
+}
+
+const article = (word: string) => (/^[aeiou]/.test(word) ? "an" : "a");
+
+/** The line under the Download section's buttons, and the download line of the Markdown pages. */
+export function downloadNote(release: Release) {
+  if (!release) return "Signed and notarized builds are not available yet.";
+  const signed = "for macOS 15 or newer, signed with Developer ID and notarized by Apple.";
+  return release.prerelease
+    ? `Pre-release ${release.tag} ${signed} Early builds can have rough edges.`
+    : `Runnir ${release.tag} ${signed}`;
+}
+
+function downloadAnswer(release: Release) {
+  if (!release)
+    return "Not yet. The first release is in development and no signed and notarized build has been published. The source code is public on GitHub, and this page switches the Download button to a real link as soon as a release is published.";
+  const signed = "for macOS 15 or newer, signed with Developer ID and notarized by Apple. Download it above or from GitHub Releases";
+  if (release.prerelease) {
+    const c = channel(release.tag);
+    return `Yes, as ${article(c)} ${c}: Runnir ${release.tag} is an early build ${signed}, and report problems on GitHub.`;
+  }
+  return `Yes. Runnir ${release.tag} is available ${signed}.`;
+}
+
+function statusAnswer(release: Release) {
+  const built =
+    "running workflows with typed inputs and saved launches, offline actionlint validation, local runs with act, runs with their jobs and logs, cancel and re-run, the Overview of what a pull request starts, the menu bar with pull requests and runs across repositories, notifications and GitHub Enterprise servers.";
+  if (!release)
+    return `Built for the first release: ${built} Still to come: the first signed build from a release tag, automatic updates and local runs checked with the full GitHub runner images.`;
+  return `${release.prerelease ? `In ${release.tag}` : "Available today"}: ${built} Still to come: automatic updates and local runs checked with the full GitHub runner images.`;
+}
+
+/** The FAQ, with the answers that depend on what GitHub Releases offers. */
+export function faq(release: Release) {
+  return BASE_FAQ.map((f) =>
+    f.q === "Can I download Runnir today?"
+      ? { q: f.q, a: downloadAnswer(release) }
+      : f.q === "What works today and what is planned?"
+        ? { q: f.q, a: statusAnswer(release) }
+        : f,
+  );
+}

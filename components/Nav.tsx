@@ -8,7 +8,7 @@ import { DownloadButton } from "./DownloadButton";
 import { GitHubLink } from "./GitHubLink";
 import { Icon } from "./Icon";
 
-type Release = { tag: string; downloadUrl: string } | null;
+import type { Release } from "@/lib/release";
 
 export function Nav({ release, solid: alwaysSolid = false }: { release: Release; solid?: boolean }) {
   const [open, setOpen] = useState(false);

@@ -1,4 +1,4 @@
-import { COMPANY, COMPANY_EMAIL, COMPANY_GITHUB, DESCRIPTION, FAQ, NAME, REPO_URL, SITE_URL } from "@/lib/content";
+import { COMPANY, COMPANY_EMAIL, COMPANY_GITHUB, DESCRIPTION, NAME, REPO_URL, SITE_URL, faq } from "@/lib/content";
 import { getLatestRelease } from "@/lib/release";
 import { Features } from "@/components/Features";
 import { Hero } from "@/components/Hero";
@@ -50,7 +50,7 @@ export default async function Home() {
       },
       {
         "@type": "FAQPage",
-        mainEntity: FAQ.map((f) => ({
+        mainEntity: faq(release).map((f) => ({
           "@type": "Question",
           name: f.q,
           acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -65,9 +65,9 @@ export default async function Home() {
       <Nav release={release} />
       <main>
         <Hero release={release} />
-        <Features />
+        <Features release={release} />
         <Trust />
-        <Faq />
+        <Faq release={release} />
         <DownloadSection release={release} />
       </main>
       <Footer />

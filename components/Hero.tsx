@@ -4,7 +4,7 @@ import { AppWindow } from "./AppWindow";
 import { DownloadButton } from "./DownloadButton";
 import { GitHubLink } from "./GitHubLink";
 
-type Release = { tag: string; downloadUrl: string } | null;
+import type { Release } from "@/lib/release";
 
 export function Hero({ release }: { release: Release }) {
   return (
