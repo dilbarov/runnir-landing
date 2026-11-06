@@ -1,9 +1,9 @@
 import { REPO } from "./content";
 
-export type Release = { tag: string; downloadUrl: string } | null;
+export type Release = { tag: string; downloadUrl: string; prerelease: boolean } | null;
 
 type GhAsset = { name: string; browser_download_url: string };
-type GhRelease = { tag_name: string; draft: boolean; assets: GhAsset[] };
+type GhRelease = { tag_name: string; draft: boolean; prerelease: boolean; assets: GhAsset[] };
 
 // During `next build` and `next dev` there is no previously generated page to fall back to
 const CAN_THROW = process.env.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build";
@@ -19,7 +19,24 @@ function lookupFailed(reason: string): Release {
   return null;
 }
 
-/** The latest published release with a macOS download; null when there is none. Cached for 30 minutes. */
+function macDownload(r: GhRelease) {
+  return (
+    r.assets.find((a) => a.name.toLowerCase().endsWith(".dmg")) ?? r.assets.find((a) => a.name.toLowerCase().endsWith(".zip"))
+  );
+}
+
+/**
+ * The build the site offers: the newest published release with a macOS download, or, while there is none,
+ * the newest pre-release (alpha, beta) with one. Drafts never. GitHub lists the newest first.
+ */
+export function pickRelease(releases: GhRelease[]): Release {
+  const published = releases.filter((r) => !r.draft && macDownload(r));
+  const chosen = published.find((r) => !r.prerelease) ?? published.find((r) => r.prerelease);
+  if (!chosen) return null;
+  return { tag: chosen.tag_name, downloadUrl: macDownload(chosen)!.browser_download_url, prerelease: chosen.prerelease };
+}
+
+/** What the site offers to download; null when nothing is published yet. Cached for 30 minutes. */
 export async function getLatestRelease(): Promise<Release> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -29,23 +46,19 @@ export async function getLatestRelease(): Promise<Release> {
 
   let res: Response;
   try {
-    res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers, next: { revalidate: 1800 } });
+    // `releases/latest` leaves out pre-releases, and the first builds are alphas.
+    res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=30`, { headers, next: { revalidate: 1800 } });
   } catch (e) {
     return lookupFailed(e instanceof Error ? e.message : String(e));
   }
-  // 404 is GitHub's answer for "no published release yet"
-  if (res.status === 404) return null;
   if (!res.ok) return lookupFailed(`GitHub responded ${res.status}`);
 
-  let data: GhRelease;
+  let data: GhRelease[];
   try {
-    data = (await res.json()) as GhRelease;
+    data = (await res.json()) as GhRelease[];
   } catch {
     return lookupFailed("invalid JSON from GitHub");
   }
-  if (data.draft) return null;
-  const asset =
-    data.assets.find((a) => a.name.toLowerCase().endsWith(".dmg")) ??
-    data.assets.find((a) => a.name.toLowerCase().endsWith(".zip"));
-  return asset ? { tag: data.tag_name, downloadUrl: asset.browser_download_url } : null;
+  if (!Array.isArray(data)) return lookupFailed("GitHub did not answer with a list of releases");
+  return pickRelease(data);
 }

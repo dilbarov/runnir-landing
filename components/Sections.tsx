@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { COMPANY, FAQ, REPO_URL, RELEASES_URL, TRUST } from "@/lib/content";
+import { COMPANY, REPO_URL, RELEASES_URL, TRUST, downloadNote, faq } from "@/lib/content";
 import { CookieSettingsButton } from "./ConsentBanner";
 import { CloneCommand } from "./CloneCommand";
 import { DownloadButton } from "./DownloadButton";
 import { GitHubLink } from "./GitHubLink";
 import { Icon } from "./Icon";
 
-type Release = { tag: string; downloadUrl: string } | null;
+import type { Release } from "@/lib/release";
 
 export function Trust() {
   return (
@@ -26,7 +26,7 @@ export function Trust() {
   );
 }
 
-export function Faq() {
+export function Faq({ release }: { release: Release }) {
   return (
     <section id="faq" aria-labelledby="faq-h" className="bg-bg">
       <div className="container-x py-20 lg:py-28">
@@ -34,7 +34,7 @@ export function Faq() {
           Questions, answered.
         </h2>
         <dl className="mt-10 grid gap-x-16 gap-y-8 md:grid-cols-2">
-          {FAQ.map((f) => (
+          {faq(release).map((f) => (
             <div key={f.q}>
               <dt className="text-[17px] font-semibold text-fg">{f.q}</dt>
               <dd className="mt-2 text-[15px] leading-relaxed text-fg-2">{f.a}</dd>
@@ -64,7 +64,7 @@ export function DownloadSection({ release }: { release: Release }) {
         </div>
         <CloneCommand />
         <p className="text-[13px] text-fg-2">
-          {release ? `Latest release ${release.tag}. ` : ""}Signed and notarized builds are not available yet.
+          {downloadNote(release)}
         </p>
       </div>
     </section>

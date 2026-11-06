@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { FEATURES, type Feature } from "@/lib/content";
+import { FEATURES, featureStatus, type Feature } from "@/lib/content";
+import type { Release } from "@/lib/release";
 import { Icon } from "./Icon";
 import { LaunchPanel, MenuBarPanel, RunLocallyPanel, RunPanel } from "./mocks";
 
@@ -43,13 +44,14 @@ const visuals: Record<Feature["id"], ReactNode> = {
   "menu-bar": <MenuBarPanel />,
 };
 
-export function Features() {
+export function Features({ release }: { release: Release }) {
+  const status = featureStatus(release);
   return (
     <>
       {FEATURES.map((f, i) => (
         <section key={f.id} id={f.id} aria-labelledby={`${f.id}-h`} className={i % 2 ? "bg-bg-alt" : "bg-bg"}>
           <div className={`container-x flex flex-col gap-10 py-20 lg:items-center lg:gap-20 lg:py-32 ${i % 2 ? "lg:flex-row-reverse" : "lg:flex-row"}`}>
-            <Copy f={f} />
+            <Copy f={{ ...f, status }} />
             {visuals[f.id]}
           </div>
         </section>

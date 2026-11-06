@@ -2,11 +2,12 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { REPO_URL } from "@/lib/content";
+import type { Release } from "@/lib/release";
 import { track } from "@/lib/analytics";
 import { Icon } from "./Icon";
 
 type Props = {
-  release: { tag: string; downloadUrl: string } | null;
+  release: Release;
   location: "nav" | "hero" | "download" | "mobile-menu";
   size?: "sm" | "lg";
   align?: "center" | "right";
@@ -42,7 +43,15 @@ export function DownloadButton({ release, location, size = "lg", align = "center
         className={`btn-primary inline-flex items-center justify-center transition-colors ${cls}`}
       >
         <Icon name="download" size={size === "sm" ? 15 : 18} />
-        {label}
+        {size === "sm" ? "Download" : label}
+        {/* The version offered; an alpha or beta in the pre-release colour. The nav keeps it from 640 px up. */}
+        <span
+          className={`whitespace-nowrap rounded-full px-2 py-0.5 font-mono text-[11px] font-medium max-sm:text-[10px] ${
+            release.prerelease ? "bg-warning/15 text-warning" : "bg-white/12 text-white"
+          } ${size === "sm" ? "max-sm:hidden" : ""}`}
+        >
+          {release.tag}
+        </span>
       </a>
     );
   }

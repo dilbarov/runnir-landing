@@ -1,15 +1,16 @@
-import { COMPANY, COMPANY_EMAIL, DESCRIPTION, FAQ, FEATURES, REPO_URL, RELEASES_URL, SITE_URL, TRUST } from "./content";
-import { getLatestRelease } from "./release";
+import { COMPANY, COMPANY_EMAIL, DESCRIPTION, FEATURES, REPO_URL, RELEASES_URL, SITE_URL, TRUST, downloadNote, faq, featureStatus } from "./content";
+import { getLatestRelease, type Release } from "./release";
 
-export async function downloadLine() {
-  const r = await getLatestRelease();
+export function downloadLine(r: Release) {
   return r
-    ? `Latest release ${r.tag}: ${r.downloadUrl}`
+    ? `Download: ${downloadNote(r)} ${r.downloadUrl}`
     : "Download: the first release is in development and not available yet. Signed and notarized builds do not exist yet.";
 }
 
 export async function pageMarkdown() {
-  const dl = await downloadLine();
+  const release = await getLatestRelease();
+  const dl = downloadLine(release);
+  const status = featureStatus(release);
   return `# Runnir
 
 > ${DESCRIPTION}
@@ -24,7 +25,7 @@ ${dl}
 
 ## What Runnir does
 
-${FEATURES.map((f) => `### ${f.index} ${f.label} (${f.status.text})\n\n**${f.title}** ${f.body}\n\n${f.points.map((p) => `- ${p}`).join("\n")}`).join("\n\n")}
+${FEATURES.map((f) => `### ${f.index} ${f.label} (${status.text})\n\n**${f.title}** ${f.body}\n\n${f.points.map((p) => `- ${p}`).join("\n")}`).join("\n\n")}
 
 ## Open source and privacy
 
@@ -32,7 +33,7 @@ ${TRUST.map((t) => `- **${t.title}**: ${t.body}`).join("\n")}
 
 ## FAQ
 
-${FAQ.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
+${faq(release).map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
 
 ## Legal
 
@@ -42,12 +43,13 @@ ${FAQ.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
 `;
 }
 
-export function llmsTxt() {
+export async function llmsTxt() {
+  const release = await getLatestRelease();
   return `# Runnir
 
 > ${DESCRIPTION}
 
-Runnir is a native SwiftUI macOS app with a portable Go Core, developed and promoted by ${COMPANY} (Florida, United States). It is free, licensed under the Apache License 2.0 and requires macOS 15 or newer. The first release is in development; the source is public.
+Runnir is a native SwiftUI macOS app with a portable Go Core, developed and promoted by ${COMPANY} (Florida, United States). It is free, licensed under the Apache License 2.0 and requires macOS 15 or newer. ${release ? downloadNote(release) : "The first release is in development; the source is public."}
 
 ## Website
 
