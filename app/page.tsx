@@ -40,7 +40,7 @@ export default async function Home() {
         url: SITE_URL,
         applicationCategory: "DeveloperApplication",
         operatingSystem: "macOS 15 or newer",
-        license: "https://www.gnu.org/licenses/gpl-3.0.html",
+        license: "https://www.apache.org/licenses/LICENSE-2.0",
         codeRepository: REPO_URL,
         isAccessibleForFree: true,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },

@@ -60,7 +60,7 @@ export async function GET() {
             <span>A faster way to run</span>
             <span>GitHub Actions.</span>
           </div>
-          <div style={{ marginTop: 18, fontSize: 24, color: "#9aa3af" }}>Native macOS app · Open source · GPLv3</div>
+          <div style={{ marginTop: 18, fontSize: 24, color: "#9aa3af" }}>Native macOS app · Open source · Apache 2.0</div>
         </div>
       </div>
     ),
