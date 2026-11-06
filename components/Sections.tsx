@@ -83,7 +83,7 @@ export function Footer() {
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/terms", label: "Terms of Use" },
     { href: "/legal", label: "All versions" },
-    { href: `${REPO_URL}/blob/main/LICENSE`, label: "License (GPLv3)", external: true },
+    { href: `${REPO_URL}/blob/main/LICENSE`, label: "License (Apache 2.0)", external: true },
   ];
   const year = new Date().getFullYear();
   return (
@@ -110,7 +110,7 @@ export function Footer() {
       <div className="border-t border-line/60">
         <div className="container-x flex flex-col items-center gap-4 py-6 text-[12.5px] text-fg-2 md:flex-row md:justify-between">
           <p className="text-center md:text-left">
-            © {year} {COMPANY}. Runnir source code is licensed under GPLv3.
+            © {year} {COMPANY}. Runnir source code is licensed under the Apache License 2.0.
           </p>
           <nav aria-label="Legal">
             <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">

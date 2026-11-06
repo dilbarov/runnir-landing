@@ -60,13 +60,13 @@ export function Hero({ release }: { release: Release }) {
           </p>
           <div
             style={{ "--d": "0.75s" } as React.CSSProperties}
-            className="hero-in mt-6 grid w-full grid-cols-[minmax(0,1fr)] gap-3.5 sm:w-auto sm:grid-cols-2"
+            className="hero-in relative z-10 mt-6 grid w-full grid-cols-[minmax(0,1fr)] gap-3.5 sm:w-auto sm:grid-cols-2"
           >
             <DownloadButton release={release} location="hero" />
             <GitHubLink location="hero" label="View on GitHub" />
           </div>
           <p style={{ "--d": "0.95s" } as React.CSSProperties} className="hero-in mt-6 text-[13px] text-[#e3e9fa]">
-            macOS 15+ · Free · GPLv3 · No telemetry by default
+            macOS 15+ · Free · Apache 2.0 · No Runnir account
           </p>
         </div>
         <div className="mt-7 w-full">

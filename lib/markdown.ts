@@ -17,7 +17,7 @@ export async function pageMarkdown() {
 Website: ${SITE_URL}
 Source code: ${REPO_URL}
 Releases: ${RELEASES_URL}
-Requirements: macOS 15 or newer. License: GPLv3.
+Requirements: macOS 15 or newer. License: Apache 2.0.
 Developer: Runnir is developed and promoted by ${COMPANY} (Florida, United States). Contact: ${COMPANY_EMAIL}
 
 ${dl}
@@ -47,7 +47,7 @@ export function llmsTxt() {
 
 > ${DESCRIPTION}
 
-Runnir is a native SwiftUI macOS app with a portable Go Core, developed and promoted by ${COMPANY} (Florida, United States). It is free, licensed under GPLv3 and requires macOS 15 or newer. The first release is in development; the source is public.
+Runnir is a native SwiftUI macOS app with a portable Go Core, developed and promoted by ${COMPANY} (Florida, United States). It is free, licensed under the Apache License 2.0 and requires macOS 15 or newer. The first release is in development; the source is public.
 
 ## Website
 
@@ -72,7 +72,7 @@ Runnir is a native SwiftUI macOS app with a portable Go Core, developed and prom
 
 ## Optional
 
-- [License (GPLv3)](${REPO_URL}/blob/main/LICENSE)
+- [License (Apache 2.0)](${REPO_URL}/blob/main/LICENSE)
 - Contact ${COMPANY}: ${COMPANY_EMAIL}
 `;
 }

@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PRESETS, RUNS, RunButton, RunRow, STAGES, StageGrid, StatusIcon, WorkflowTabs, type Stage, type Status } from "./mocks";
+import { Icon } from "./Icon";
+import { LaneRow, Launches, RUNS, RunRow, type Lane, type Status } from "./mocks";
 
-// Real milliseconds at which each job finishes, and the fake run time it reports.
-const LINT = 1100;
-const UNIT = 2000;
-const BUILD = 3700;
-const ARCHIVE = 5400;
+// Real milliseconds at which each running job finishes, and the fake run time it reports.
+const NATIVE = 2400;
+const CROSS = 5600;
 const LOOP = 12000;
 
 function fmt(sec: number) {
@@ -15,28 +14,71 @@ function fmt(sec: number) {
   return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, "0")}s`;
 }
 
-function job(e: number, start: number, end: number, total: number, done: Status, label: string) {
+function job(e: number, start: number, end: number, from: number, total: number, done: string) {
   if (e < start) return { s: "queued" as Status, t: undefined };
-  if (e < end) return { s: "running" as Status, t: fmt((total * (e - start)) / (end - start)) };
-  return { s: done, t: label };
+  if (e < end) return { s: "running" as Status, t: fmt(from + ((total - from) * (e - start)) / (end - start)) };
+  return { s: "ok" as Status, t: done };
 }
 
-function stagesAt(e: number): Stage[] {
+/** The Overview's scenario "Pull request → main"; without JS or with reduced motion it stays as drawn in Pen. */
+function lanesAt(e: number | null): Lane[] {
+  const native = e === null ? { s: "running" as Status, t: "1m 40s" } : job(e, 0, NATIVE, 100, 112, "1m 52s");
+  const cross = e === null ? { s: "queued" as Status, t: undefined } : job(e, NATIVE, CROSS, 0, 200, "3m 20s");
+  const done = e !== null && e >= CROSS;
   return [
     {
-      name: "CHECK",
-      jobs: [
-        { n: "lint", ...job(e, 0, LINT, 41, "ok", "41s") },
-        { n: "unit-tests", ...job(e, 0, UNIT, 192, "ok", "3m 12s") },
+      name: "CI",
+      fav: true,
+      s: "ok",
+      status: "Succeeded #1482",
+      more: " · 2m ago",
+      trigger: "pull_request · branches main",
+      cols: [
+        [
+          { n: "lint", s: "ok", t: "41s" },
+          { n: "unit-tests", s: "ok", t: "3m 12s" },
+        ],
+        [{ n: "build", s: "ok", t: "4m 05s" }],
       ],
     },
-    { name: "BUILD", jobs: [{ n: "build-ios", ...job(e, UNIT, BUILD, 400, "ok", "6m 40s") }] },
-    { name: "ARCHIVE", jobs: [{ n: "archive", ...job(e, BUILD, ARCHIVE, 281, "fail", "4m 41s") }] },
-    STAGES[3],
+    {
+      name: "Go Core",
+      s: done ? "ok" : "running",
+      status: done ? "Succeeded #388" : "Running #388",
+      more: " · now",
+      trigger: "pull_request · paths ✓",
+      cols: [
+        [
+          { n: "native tests ×3", ...native },
+          { n: "lint-security", s: "ok", t: "38s", from: "lg" },
+          { n: "contract", s: "ok", t: "51s", from: "sm" },
+        ],
+        [{ n: "cross-build ×6", ...cross }],
+      ],
+    },
+    {
+      name: "Report",
+      after: "after CI",
+      s: "ok",
+      status: "Succeeded #77",
+      more: " · 1m ago",
+      trigger: "workflow_run",
+      from: "lg",
+      cols: [[{ n: "summary", s: "ok", t: "12s" }]],
+    },
   ];
 }
 
-/** The Overview pane of the hero window. It replays a pipeline run while visible; static for reduced motion and without JS. */
+const DEPLOY: Lane = {
+  name: "Deploy",
+  s: "none",
+  status: "Not run",
+  more: " in this scenario yet",
+  trigger: "workflow_dispatch",
+  cols: [[{ n: "build-image", s: "queued" }], [{ n: "deploy-production", s: "none", manual: true }]],
+};
+
+/** The Overview pane of the hero window. It replays the running lane while visible. */
 export function LiveOverview() {
   const [elapsed, setElapsed] = useState<number | null>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -69,59 +111,36 @@ export function LiveOverview() {
     };
   }, []);
 
-  const running = elapsed !== null && elapsed < ARCHIVE;
-  const stages = elapsed === null ? STAGES : stagesAt(elapsed);
-  const runs = RUNS.map((r, i) => (i === 0 && running ? { ...r, s: "running" as Status, when: "running" } : i === 0 && elapsed !== null ? { ...r, when: "just now" } : r));
-
   return (
-    <div ref={ref} className="space-y-[18px] px-5 pb-0 pt-1">
-      <div className="flex flex-wrap items-center gap-x-[18px] gap-y-2">
-        <WorkflowTabs />
-        <span className="hidden h-2.5 w-px bg-line sm:block" />
-        {running ? (
-          <span className="hidden items-center gap-1.5 text-xs text-active sm:flex">
-            <StatusIcon s="running" size={14} /> In progress
-            <span className="font-mono text-[11px] text-fg-2">run #1483 · a3f9c21</span>
-          </span>
-        ) : (
-          <span className="hidden items-center gap-1.5 text-xs text-error sm:flex">
-            <StatusIcon s="fail" size={14} /> Failure
-            <span className="font-mono text-[11px] text-fg-2">run #{elapsed === null ? 1482 : 1483} · a3f9c21</span>
-          </span>
-        )}
+    <div ref={ref} className="space-y-3.5 px-3 pb-0 pt-4 sm:px-5 sm:pt-[18px] lg:px-7">
+      <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+        <span className="flex items-center gap-1.5 text-[13.5px] font-semibold text-fg sm:text-[15px]">
+          Pull request → main <Icon name="chevron" size={12} className="text-fg-2" />
+        </span>
+        <span className="text-[12.5px] text-fg-2 max-sm:hidden">12 files changed against origin/main</span>
       </div>
-      <StageGrid stages={stages} />
-      <p className="hidden text-[12.5px] text-fg-2 md:block">
-        ⓘ Manual jobs unlock when the stages before them pass.{" "}
-        {running ? "Waiting for the pipeline to finish…" : "Archive failed — fix it or re-run to continue."}
-      </p>
-      <div className="hidden h-px bg-line md:block" />
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 pb-6 md:grid-cols-[minmax(0,1fr)_320px]">
+      {lanesAt(elapsed).map((l) => (
+        <LaneRow key={l.name} lane={l} />
+      ))}
+      <p className="text-[10.5px] font-semibold tracking-[0.1em] text-fg-2 sm:text-[11px]">RUN BY HAND</p>
+      <LaneRow lane={DEPLOY} />
+      <div className="h-px bg-line" />
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-7 pb-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div>
-          <div className="flex justify-between pb-1.5 text-[10.5px] font-semibold tracking-wider text-fg-2">
+          <p className="flex justify-between pb-1 text-[10.5px] font-semibold tracking-[0.1em] text-fg-2 sm:text-[11px]">
             RECENT RUNS <span className="text-xs font-normal tracking-normal text-accent">All runs</span>
-          </div>
+          </p>
           <ul>
-            {runs.map((r) => (
+            {RUNS.slice(0, 2).map((r) => (
               <RunRow key={r.wf} r={r} />
             ))}
           </ul>
         </div>
-        <div className="hidden md:block">
-          <div className="flex justify-between pb-1.5 text-[10.5px] font-semibold tracking-wider text-fg-2">
+        <div className="max-lg:hidden">
+          <p className="flex justify-between pb-1 text-[11px] font-semibold tracking-[0.1em] text-fg-2">
             RUN MANUALLY <span className="text-xs font-normal tracking-normal text-accent">New…</span>
-          </div>
-          <ul>
-            {PRESETS.map((p) => (
-              <li key={p.name} className="flex items-center justify-between py-2.5">
-                <div>
-                  <p className="text-[13.5px] font-medium text-fg">{p.name}</p>
-                  <p className="text-[11.5px] text-fg-2">{p.meta.split(" · ").slice(1).join(" · ") || p.meta}</p>
-                </div>
-                <RunButton />
-              </li>
-            ))}
-          </ul>
+          </p>
+          <Launches />
         </div>
       </div>
     </div>

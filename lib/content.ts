@@ -12,85 +12,102 @@ export const NAME = "Runnir";
 export const TITLE = "Runnir — a faster way to run GitHub Actions on your Mac";
 export const TAGLINE = "A faster way to run GitHub Actions.";
 export const DESCRIPTION =
-  "Runnir is an open-source native macOS app to launch GitHub Actions workflows, test them locally and watch every pipeline from one window. Free, GPLv3, no telemetry by default.";
+  "Runnir is an open-source native macOS app to launch GitHub Actions workflows, test them locally and watch every pipeline from one window and the menu bar. Free and licensed under Apache 2.0.";
 
 export const NAV = [
   { href: "/#launch", label: "Launch" },
-  { href: "/#save-minutes", label: "Save minutes" },
-  { href: "/#one-place", label: "One place" },
+  { href: "/#run-locally", label: "Run locally" },
+  { href: "/#pipelines", label: "Pipelines" },
+  { href: "/#menu-bar", label: "Menu bar" },
   { href: "/#open-source", label: "Open source" },
 ];
 
 export type Feature = {
-  id: string;
+  id: "launch" | "run-locally" | "pipelines" | "menu-bar";
   index: string;
   label: string;
-  status: { text: string; tone: "planned" | "available" };
+  status: { text: string; tone: "planned" | "built" };
   title: string;
   body: string;
   points: string[];
 };
+
+// Built and tested, not released: the first signed build from a tag is still to come.
+const BUILT = { text: "Built for v0.1", tone: "built" } as const;
 
 export const FEATURES: Feature[] = [
   {
     id: "launch",
     index: "01",
     label: "Launch",
-    status: { text: "Planned for v0.1", tone: "planned" },
+    status: BUILT,
     title: "Launch any workflow without opening GitHub.",
-    body: "Stop hunting through the Actions tab and retyping inputs. Save a launch once, then start it from your Mac whenever you need it.",
+    body: "Stop hunting through the Actions tab and retyping inputs. Pick a branch, fill in typed inputs, or start a saved launch in one click.",
     points: [
-      "Typed inputs, validated before anything is sent",
-      "Presets stored in .runnir/presets.yml, versioned with your repo",
-      "Manual pipeline jobs shown right in the stage view",
+      "Typed inputs, checked before anything is sent",
+      "Launches shared in .runnir/launches or kept on your Mac",
+      "Manual jobs start right from the pipeline",
     ],
   },
   {
-    id: "save-minutes",
+    id: "run-locally",
     index: "02",
-    label: "Save minutes",
-    status: { text: "Planned for v0.1", tone: "planned" },
+    label: "Run locally",
+    status: BUILT,
     title: "Catch the typo before the pipeline does.",
-    body: "Every “fix ci” commit costs a push, a queue and a failed run. Edit the workflow, check it offline and run it locally before anything leaves your machine.",
+    body: "Every “fix ci” commit costs a push, a queue and a failed run. Check the workflow offline and run its jobs on your Mac first. Runnir counts the Actions minutes each local run saved.",
     points: [
       "Offline actionlint diagnostics with file and line",
-      "Run locally with act on Docker or OrbStack",
-      "Nothing is committed or pushed for you",
+      "Jobs run with act on OrbStack, Docker Desktop or Colima",
+      "Secrets and variables from your Keychain, per environment",
     ],
   },
   {
-    id: "one-place",
+    id: "pipelines",
     index: "03",
-    label: "One place",
-    status: { text: "Available · read-only", tone: "available" },
+    label: "Pipelines",
+    status: BUILT,
     title: "Every pipeline. One window.",
-    body: "Switch between workflows, branches and repositories without ten browser tabs. See every pipeline, its jobs and the latest runs side by side.",
+    body: "See which workflows a pull request will start, what runs after them and what waits for you. When a run fails, Runnir shows the step and opens its log.",
     points: [
-      "Pipeline stages and jobs at a glance",
-      "Recent runs across workflows, with logs one click away",
-      "One window per repository, restored on relaunch",
+      "Triggers, chains and manual stages in one scenario",
+      "The failed step and its log one click away",
+      "Cancel and re-run failed jobs, with a confirmation",
+    ],
+  },
+  {
+    id: "menu-bar",
+    index: "04",
+    label: "Menu bar",
+    status: BUILT,
+    title: "Your CI, one click away.",
+    body: "Your pull requests with their checks, and the failed and running runs of your workspaces and starred repositories, wait in the menu bar. Notifications come from your Mac, not from a server.",
+    points: [
+      "Pull requests with their GitHub Actions checks",
+      "Failed and running runs across your workspaces and stars",
+      "⌥⌘R opens the list from any app",
     ],
   },
 ];
 
 export const TRUST = [
   { icon: "shield", title: "Keychain only", body: "Tokens never touch files or logs." },
-  { icon: "eyeOff", title: "No telemetry by default", body: "Reports are previewed before they leave your Mac." },
-  { icon: "code", title: "Open source, GPLv3", body: "Native SwiftUI app with a portable Go Core." },
+  { icon: "eyeOff", title: "Anonymous counts only", body: "No id, off in Settings › Privacy. Usage data only if you agree." },
+  { icon: "code", title: "Open source, Apache 2.0", body: "Native SwiftUI app with a portable Go Core." },
 ] as const;
 
 export const FAQ = [
   {
     q: "What is Runnir?",
-    a: "Runnir is an open-source native macOS workspace for GitHub Actions and local workflow development. It lets you launch workflows, validate and test them locally, and watch every pipeline from one window.",
+    a: "Runnir is an open-source native macOS app for GitHub Actions. It launches workflows with typed inputs, checks and runs them locally with act, shows what a pull request will start and where a run failed, and keeps your pull requests and runs in the menu bar.",
   },
   {
     q: "Who develops Runnir?",
-    a: "Runnir is developed and promoted by DIL EIGHT LLC, a Florida limited liability company. The source code is open under GPLv3 and welcomes outside contributions on GitHub.",
+    a: "Runnir is developed and promoted by DIL EIGHT LLC, a Florida limited liability company. The source code is open under the Apache License 2.0 and welcomes outside contributions on GitHub.",
   },
   {
     q: "Can I download Runnir today?",
-    a: "Not yet. The first release is in development and no signed or notarized builds exist yet. The source code is public on GitHub, and this page switches the Download button to a real link as soon as a release is published.",
+    a: "Not yet. The first release is in development and no signed and notarized build has been published. The source code is public on GitHub, and this page switches the Download button to a real link as soon as a release is published.",
   },
   {
     q: "Which Macs does Runnir support?",
@@ -98,11 +115,11 @@ export const FAQ = [
   },
   {
     q: "Is Runnir free and open source?",
-    a: "Yes. Runnir is free and licensed under GPLv3. The code lives at github.com/dil-eight/runnir.",
+    a: "Yes. Runnir is free and licensed under the Apache License 2.0. The code lives at github.com/dil-eight/runnir.",
   },
   {
-    q: "Does Runnir collect telemetry?",
-    a: "No telemetry by default. Any analytics or crash reports are optional, and reports are previewed before they leave your Mac. This marketing website uses cookieless analytics and respects Do Not Track.",
+    q: "Does Runnir collect analytics?",
+    a: "Only anonymous counts without any id: that Runnir was installed, and how many GitHub Actions minutes local runs and cancelled runs saved. You can turn them off in Settings › Privacy. Counts of the screens and actions you use, with a random id, are sent only if you agree. Never your code, repository or workflow names, logs or tokens. This website uses cookieless analytics unless you allow more, and respects Do Not Track.",
   },
   {
     q: "Where does Runnir store my GitHub token?",
@@ -110,10 +127,10 @@ export const FAQ = [
   },
   {
     q: "What works today and what is planned?",
-    a: "Today: importing local repositories, a read-only workflow browser and independent, restorable workspace windows. Planned for v0.1: typed workflow dispatch, offline actionlint validation, run and log inspection, and local execution with act.",
+    a: "Built for the first release: running workflows with typed inputs and saved launches, offline actionlint validation, local runs with act, runs with their jobs and logs, cancel and re-run, the Overview of what a pull request starts, the menu bar with pull requests and runs across repositories, notifications and GitHub Enterprise servers. Still to come: the first signed build from a release tag, automatic updates and local runs checked with the full GitHub runner images.",
   },
   {
     q: "Do I need Docker to use Runnir?",
-    a: "Only for local workflow execution, which is planned for v0.1 and uses act on Docker or OrbStack. Browsing workflows and runs does not require it.",
+    a: "Only for local runs. Runnir bundles act and uses your own container engine: OrbStack, Docker Desktop or Colima. Browsing workflows, running them on GitHub and reading logs do not need it.",
   },
 ];

@@ -6,7 +6,7 @@ Source design: `runnir/docs/design/runnir-landing.pen` (frames: Desktop 1440, Ta
 Next.js 15 App Router, TypeScript, Tailwind v4, pnpm. Fully static except the release lookup (ISR, 30 min). Only runtime dependency besides Next/React: `posthog-js`.
 
 ## Page
-Nav · Hero (runestone image, headline, CTAs, app window mock) · 01 Launch · 02 Save minutes · 03 One place · Open-source strip · FAQ (addition, for AI/SEO) · Download · Footer. Mocks are JSX, not images. Colour tokens come from the .pen variables.
+Nav · Hero (runestone image, headline, CTAs, app window: the Overview's scenario lanes) · 01 Launch · 02 Run locally · 03 Pipelines · 04 Menu bar · Open-source strip · FAQ (addition, for AI/SEO) · Download · Footer. Mocks are JSX, not images, and copy the app's screens in `runnir/docs/design/runnir.pen` (S03 Overview, S08 run, S10 Run locally, S19 menu bar). Colour tokens come from the .pen variables.
 
 ## Download button
 `lib/release.ts` calls `GET https://api.github.com/repos/dil-eight/runnir/releases/latest` with `revalidate: 1800`.
